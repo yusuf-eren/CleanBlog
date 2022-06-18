@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const ejs = require('ejs');
 const mongoose = require('mongoose');
-const AddPost = require('./models/Photo.js');
+const AddPost = require('./models/Blog.js');
 
 mongoose.connect('mongodb://localhost/cleanblog-test-db');
 
@@ -11,8 +11,16 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.render('index');
+app.get('/posts/:id', async (req, res) => {
+  const posts = await AddPost.findById(req.params.id);
+  res.render('post', {
+    posts: posts,
+  });
+});
+
+app.get('/', async (req, res) => {
+  const posts = await AddPost.find({});
+  res.render('index', { posts: posts });
 });
 app.get('/index', (req, res) => {
   res.render('index');
