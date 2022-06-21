@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const ejs = require('ejs');
 const mongoose = require('mongoose');
+const exup = require('express-fileupload');
 const AddPost = require('./models/Blog.js');
 
 mongoose.connect('mongodb://localhost/cleanblog-test-db');
@@ -37,6 +38,7 @@ app.get('/about', (req, res) => {
 
 app.post('/posts', async (req, res) => {
   AddPost.create(req.body);
+  console.log(req.files.foo);
   res.redirect('/');
 });
 
